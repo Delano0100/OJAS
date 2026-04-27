@@ -1,0 +1,39 @@
+{
+  "device_id": "END-1775462554328-4630",
+  "simulation": false,
+  "poll_interval_sec": 5,
+  "retry_delay_sec": 3,
+  "mqtt": {
+    "endpoint": "qd72331c.ala.asia-southeast1.emqxsl.com",
+    "port": 8883,
+    "client_id": "python_tool",
+    "username": "Neo",
+    "password": "Neo_1",
+    "pub_topic": "device/END-1775462554328-4630/telemetry",
+    "use_tls": true,
+    "use_cert": false,
+    "ca": "",
+    "cert": "",
+    "key": ""
+  },
+  "dlms": {
+    "port": "COM13",
+    "baudrate": 9600,
+    "client_address": 32,
+    "server_address": 1,
+    "interface": "WRAPPER",
+    "authentication": "LOW",
+    "security": "AUTHENTICATION_ENCRYPTION",
+    "password": "LWTSM",
+    "system_title_hex": "4142434431323334",
+    "auth_key_hex": "30313233343536373839414243444546",
+    "block_key_hex": "30313233343536373839414243444546",
+    "dedicated_key_hex": "30313233343536373839414243444546",
+    "invocation_counter": 1,
+    "obis_map": {
+      "voltage": "1.0.32.7.0.255",
+      "current": "1.0.31.7.0.255",
+      "energy": "1.0.1.8.0.255"
+    }
+  }
+}

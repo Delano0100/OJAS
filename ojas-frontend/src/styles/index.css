@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --c-bg: 246 248 252;
+  --c-surface: 255 255 255;
+  --c-border: 226 232 240;
+  --c-primary: 37 99 235;
+  --c-success: 22 163 74;
+  --c-warning: 217 119 6;
+  --c-danger: 220 38 38;
+  --c-text-primary: 15 23 42;
+  --c-text-secondary: 71 85 105;
+
+  color: rgb(var(--c-text-primary));
+  background-color: rgb(var(--c-bg));
+}
+
+.dark {
+  --c-bg: 10 10 15;
+  --c-surface: 17 17 24;
+  --c-border: 30 30 46;
+  --c-primary: 59 130 246;
+  --c-success: 34 197 94;
+  --c-warning: 245 158 11;
+  --c-danger: 239 68 68;
+  --c-text-primary: 241 245 249;
+  --c-text-secondary: 100 116 139;
+
+  color: rgb(var(--c-text-primary));
+  background-color: rgb(var(--c-bg));
+}
+
+* {
+  border-color: rgb(var(--c-border));
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(var(--c-text-primary));
+  background:
+    radial-gradient(circle at 100% 0%, rgb(var(--c-primary) / 0.14), transparent 30%),
+    radial-gradient(circle at 0% 100%, rgb(var(--c-success) / 0.1), transparent 26%),
+    rgb(var(--c-bg));
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.font-data {
+  font-family: 'DM Mono', monospace;
+}
+
+.metric-card {
+  @apply rounded-xl border border-border bg-surface p-4 shadow-[0_0_0_1px_rgba(30,30,46,0.35)];
+}
+
+.section-card {
+  @apply rounded-xl border border-border bg-surface p-4 md:p-5;
+}

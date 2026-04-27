@@ -1,0 +1,163 @@
+export const MOCK_DEVICES = [
+  {
+    id: 'END-001',
+    type: 'END',
+    name: 'Energy Meter Block A',
+    location: 'Building A, Floor 1',
+    status: 'online',
+    lastSeen: '2 mins ago',
+    readings: {
+      voltage: 231.4,
+      current: 12.3,
+      power: 2847,
+      energy: 1284.5,
+      frequency: 50.1,
+      powerFactor: 0.94,
+      temperature: 42.3,
+      load: 78,
+    },
+  },
+  {
+    id: 'END-002',
+    type: 'END',
+    name: 'Load Monitor Pump Station 3',
+    location: 'Water Utility Zone 3',
+    status: 'offline',
+    lastSeen: '14 mins ago',
+    readings: {
+      voltage: 228.9,
+      current: 0,
+      power: 0,
+      energy: 932.7,
+      frequency: 49.9,
+      powerFactor: 0.9,
+      temperature: 35.1,
+      load: 0,
+    },
+  },
+  {
+    id: 'END-003',
+    type: 'END',
+    name: 'Street Lighting Feeder 12',
+    location: 'Smart City Zone West',
+    status: 'warning',
+    lastSeen: '30 secs ago',
+    readings: {
+      voltage: 226.2,
+      current: 10.8,
+      power: 2440,
+      energy: 1540.2,
+      frequency: 50.3,
+      powerFactor: 0.86,
+      temperature: 58.4,
+      load: 87,
+    },
+  },
+  {
+    id: 'DCB-001',
+    type: 'DCB',
+    name: 'Data Collection Box - Site 1',
+    location: 'Site 1, Main Panel',
+    status: 'online',
+    lastSeen: '1 min ago',
+    subDevices: [
+      {
+        id: 'DCB-001-SUB-01',
+        name: 'Energy Meter 1',
+        type: 'energy_meter',
+        status: 'online',
+        readings: { voltage: 229.8, current: 8.4, power: 1931, energy: 892.1 },
+      },
+      {
+        id: 'DCB-001-SUB-02',
+        name: 'Temperature Sensor',
+        type: 'temp_sensor',
+        status: 'warning',
+        readings: { temperature: 67.8, humidity: 45 },
+      },
+    ],
+  },
+  {
+    id: 'DCB-002',
+    type: 'DCB',
+    name: 'Data Collection Box - Site 2',
+    location: 'Industrial Estate Feeder Bay',
+    status: 'online',
+    lastSeen: '3 mins ago',
+    subDevices: [
+      {
+        id: 'DCB-002-SUB-01',
+        name: 'Power Quality Analyzer',
+        type: 'power_quality',
+        status: 'online',
+        readings: { voltage: 232.1, current: 6.7, power: 1560, frequency: 50.0 },
+      },
+      {
+        id: 'DCB-002-SUB-02',
+        name: 'Environment Sensor',
+        type: 'env_sensor',
+        status: 'online',
+        readings: { temperature: 33.5, humidity: 54 },
+      },
+    ],
+  },
+]
+
+export const MOCK_ALERTS = [
+  {
+    id: 'ALT-1001',
+    severity: 'critical',
+    deviceId: 'END-003',
+    deviceName: 'Street Lighting Feeder 12',
+    message: 'Over-temperature threshold exceeded at feeder output.',
+    timestamp: '2026-03-23 14:12:48',
+  },
+  {
+    id: 'ALT-1002',
+    severity: 'warning',
+    deviceId: 'DCB-001-SUB-02',
+    deviceName: 'Temperature Sensor',
+    message: 'Ambient temperature rising steadily for last 10 minutes.',
+    timestamp: '2026-03-23 14:09:04',
+  },
+  {
+    id: 'ALT-1003',
+    severity: 'info',
+    deviceId: 'END-002',
+    deviceName: 'Load Monitor Pump Station 3',
+    message: 'Device heartbeat restored after communication timeout.',
+    timestamp: '2026-03-23 13:59:16',
+  },
+  {
+    id: 'ALT-1004',
+    severity: 'warning',
+    deviceId: 'DCB-002-SUB-01',
+    deviceName: 'Power Quality Analyzer',
+    message: 'Power factor dipped below configured baseline.',
+    timestamp: '2026-03-23 13:47:31',
+  },
+]
+
+export const MOCK_ENERGY_TREND = [
+  { day: 'Mon', consumption: 842 },
+  { day: 'Tue', consumption: 910 },
+  { day: 'Wed', consumption: 887 },
+  { day: 'Thu', consumption: 955 },
+  { day: 'Fri', consumption: 978 },
+  { day: 'Sat', consumption: 932 },
+  { day: 'Sun', consumption: 904 },
+]
+
+export const MOCK_POWER_TREND = [
+  { time: '08:00', power: 1640 },
+  { time: '09:00', power: 1780 },
+  { time: '10:00', power: 1825 },
+  { time: '11:00', power: 1942 },
+  { time: '12:00', power: 2058 },
+  { time: '13:00', power: 1994 },
+  { time: '14:00', power: 2140 },
+  { time: '15:00', power: 2072 },
+  { time: '16:00', power: 2018 },
+]
+
+export const ENERGY_RATE_PER_KWH = 8.75
