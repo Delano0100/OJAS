@@ -7,7 +7,8 @@ const DLMS_BASE_URL = 'https://ojas-dlms-service.onrender.com'
 
 // GET /api/handshake?sid=<session_id>
 router.get('/', async (req, res) => {
-     console.log(`\nGetting ther`
+     const { sid } = req.query
+     console.log(`\nGetting there ${sid}`)
 //   const { sid } = req.query
 
 //   if (!sid) {
