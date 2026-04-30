@@ -328,7 +328,7 @@ export default function DeviceDetailPage() {
     setHandshakeLoading(true)
     setHandshakeResult(null)
     try {
-      const res = await fetch(`/api/handshake?deviceId=${device?.deviceId || deviceId}`)
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/handshake?deviceId=${device?.deviceId || deviceId}`)
       const data = await res.json()
       console.log('Handshake response:', data)
       if (!res.ok) {
