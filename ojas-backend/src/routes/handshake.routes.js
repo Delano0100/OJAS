@@ -32,7 +32,9 @@ router.get('/', async (req, res) => {
     })
     return res.status(200).json(dlmsResponse.data)
   }
-
+catch (error) {
+    return res.status(error.response.status).json(error.response.data)
+}
 //     console.log('\n[DLMS] ✅ Response received:')
 //     console.log('[DLMS] Status :', dlmsResponse.status)
 //     console.log('[DLMS] Data   :', JSON.stringify(dlmsResponse.data, null, 2))
