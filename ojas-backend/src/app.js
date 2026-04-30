@@ -11,7 +11,7 @@ import { getMqttClient } from './config/mqtt.js'
 import { startDlmsPolling } from './services/dlms-poller.service.js'
 import { requestLogger } from './middleware/request-logger.middleware.js'
 import passport, { configurePassport } from './config/passport.js'
-
+import handshakeRoutes from './routes/handshake.routes.js'
 const app = express()
 
 const corsOriginValue = process.env.CORS_ORIGINS || process.env.FRONTEND_URL
@@ -72,6 +72,7 @@ app.use('/auth', authRoutes)
 app.use('/api/devices', deviceRoutes)
 app.use('/api/telemetry', telemetryRoutes)
 app.use('/api/admin', adminRoutes)
+app.use('/api/handshake', handshakeRoutes)
 
 // 404 handler
 app.use((req, res) => {
