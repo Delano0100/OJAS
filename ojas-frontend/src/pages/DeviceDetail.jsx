@@ -1,5 +1,5 @@
 import mqtt from 'mqtt'
-import { ArrowLeft, Download } from 'lucide-react'
+import { ArrowLeft, Download, Handshake, Zap } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getDeviceById, getTelemetryHistory } from '../services/device.service'
@@ -319,6 +319,14 @@ export default function DeviceDetailPage() {
     return () => clearInterval(id)
   }, [])
 
+  const handleHandshake = () => {
+    console.log('Handshake button pressed')
+  }
+
+  const handleReadEnergy = () => {
+    console.log('Read Energy button pressed')
+  }
+
   if (loading) return <Loader />
 
   if (error || !device) {
@@ -423,7 +431,28 @@ export default function DeviceDetailPage() {
       </div>
 
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-textPrimary">Live Readings</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-textPrimary">Live Readings</h2>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleHandshake}
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors"
+              type="button"
+            >
+              <Handshake className="h-4 w-4" />
+              Handshake
+            </button>
+            <button
+              onClick={handleReadEnergy}
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors"
+              type="button"
+            >
+              <Zap className="h-4 w-4" />
+              Read Energy
+            </button>
+          </div>
+        </div>
+
         {telemetry ? (
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             <div className="section-card">
