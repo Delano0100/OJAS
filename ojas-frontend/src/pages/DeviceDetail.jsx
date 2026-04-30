@@ -323,26 +323,31 @@ export default function DeviceDetailPage() {
     return () => clearInterval(id)
   }, [])
 
-  const handleHandshake = async () => {
-    console.log('Handshake button pressed')
-    setHandshakeLoading(true)
-    setHandshakeResult(null)
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/handshake?deviceId=${device?.deviceId || deviceId}`)
-      const data = await res.json()
-      console.log('Handshake response:', data)
-      if (!res.ok) {
-        setHandshakeResult({ success: false, error: data?.message || `Error ${res.status}` })
-      } else {
-        setHandshakeResult({ success: true, data })
-      }
-    } catch (err) {
-      console.error('Handshake error:', err)
-      setHandshakeResult({ success: false, error: err.message || 'Request failed' })
-    } finally {
-      setHandshakeLoading(false)
+ const handleHandshake = async () => {
+  console.log('Handshake button pressed')
+  setHandshakeLoading(true)
+  setHandshakeResult(null)
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/handshake?deviceId=${device?.deviceId || deviceId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
+      },
+    })
+    const data = await res.json()
+    console.log('Handshake response:', data)
+    if (!res.ok) {
+      setHandshakeResult({ success: false, error: data?.message || `Error ${res.status}` })
+    } else {
+      setHandshakeResult({ success: true, data })
     }
+  } catch (err) {
+    console.error('Handshake error:', err)
+    setHandshakeResult({ success: false, error: err.message || 'Request failed' })
+  } finally {
+    setHandshakeLoading(false)
   }
+}
 
   const handleReadEnergy = () => {
     console.log('Read Energy button pressed')
