@@ -7,29 +7,31 @@ const DLMS_BASE_URL = 'https://ojas-dlms-service.onrender.com'
 
 // GET /api/handshake?sid=<session_id>
 router.get('/', async (req, res) => {
-     const { sid } = req.query
-     console.log(`\nGetting there ${sid}`)
-     return res.status(200).json(sid)
-//   const { sid } = req.query
+   
+  const { sid } = req.query
+  console.log(`\nGetting there ${sid}`)
 
-//   if (!sid) {
-//     return res.status(400).json({
-//       success: false,
-//       error: {
-//         code: 'MISSING_PARAM',
-//         message: 'Missing required query param: sid (session id)',
-//       },
-//     })
-//   }
+  if (!sid) {
+    return res.status(400).json({
+      success: false,
+      error: {
+        code: 'MISSING_PARAM',
+        message: 'Missing required query param: sid (session id)',
+      },
+    })
+  }
 
+// return res.status(200).json(sid)
 //   console.log(`\n[DLMS] Triggering handshake for sid: ${sid}`)
 //   console.log(`[DLMS] Calling: ${DLMS_BASE_URL}/encode/handshake?sid=${sid}`)
 
-//   try {
-//     const dlmsResponse = await axios.get(`${DLMS_BASE_URL}/encode/handshake`, {
-//       params: { sid },
-//       timeout: 10000,
-//     })
+  try {
+    const dlmsResponse = await axios.get(`${DLMS_BASE_URL}/encode/handshake`, {
+      params: { sid },
+      timeout: 20000,
+    })
+    return res.status(200).json(dlmsResponse.data)
+  }
 
 //     console.log('\n[DLMS] ✅ Response received:')
 //     console.log('[DLMS] Status :', dlmsResponse.status)
