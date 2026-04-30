@@ -9,6 +9,7 @@ const DLMS_BASE_URL = 'https://ojas-dlms-service.onrender.com'
 router.get('/', async (req, res) => {
      const { sid } = req.query
      console.log(`\nGetting there ${sid}`)
+     return res.status(200).json(sid)
 //   const { sid } = req.query
 
 //   if (!sid) {
