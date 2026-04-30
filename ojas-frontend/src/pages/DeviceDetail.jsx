@@ -1,5 +1,5 @@
 import mqtt from 'mqtt'
-import { ArrowLeft, Download, Handshake, Zap } from 'lucide-react'
+import { ArrowLeft, Download, Handshake, Zap, Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getDeviceById, getTelemetryHistory } from '../services/device.service'
@@ -113,6 +113,10 @@ export default function DeviceDetailPage() {
   const clientRef = useRef(null)
   const cleanupTimerRef = useRef(null)
   const subscribedTopicRef = useRef(null)
+
+  // Handshake state
+  const [handshakeLoading, setHandshakeLoading] = useState(false)
+  const [handshakeResult, setHandshakeResult] = useState(null) // { success: bool, data: any, error: string }
 
   // Fetch device info once on mount
   useEffect(() => {
@@ -319,8 +323,25 @@ export default function DeviceDetailPage() {
     return () => clearInterval(id)
   }, [])
 
-  const handleHandshake = () => {
+  const handleHandshake = async () => {
     console.log('Handshake button pressed')
+    setHandshakeLoading(true)
+    setHandshakeResult(null)
+    try {
+      const res = await fetch(`/api/handshake?deviceId=${device?.deviceId || deviceId}`)
+      const data = await res.json()
+      console.log('Handshake response:', data)
+      if (!res.ok) {
+        setHandshakeResult({ success: false, error: data?.message || `Error ${res.status}` })
+      } else {
+        setHandshakeResult({ success: true, data })
+      }
+    } catch (err) {
+      console.error('Handshake error:', err)
+      setHandshakeResult({ success: false, error: err.message || 'Request failed' })
+    } finally {
+      setHandshakeLoading(false)
+    }
   }
 
   const handleReadEnergy = () => {
@@ -436,10 +457,13 @@ export default function DeviceDetailPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={handleHandshake}
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors"
+              disabled={handshakeLoading}
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               type="button"
             >
-              <Handshake className="h-4 w-4" />
+              {handshakeLoading
+                ? <Loader2 className="h-4 w-4 animate-spin" />
+                : <Handshake className="h-4 w-4" />}
               Handshake
             </button>
             <button
@@ -452,6 +476,40 @@ export default function DeviceDetailPage() {
             </button>
           </div>
         </div>
+
+        {/* Handshake result banner */}
+        {handshakeResult && (
+          <div
+            className={`mb-4 rounded-md border px-4 py-3 text-sm ${
+              handshakeResult.success
+                ? 'border-green-500/30 bg-green-500/10 text-green-400'
+                : 'border-red-500/30 bg-red-500/10 text-red-400'
+            }`}
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <p className="font-medium mb-1">
+                  {handshakeResult.success ? 'Handshake Successful' : 'Handshake Failed'}
+                </p>
+                {handshakeResult.success
+                  ? (
+                    <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">
+                      {JSON.stringify(handshakeResult.data, null, 2)}
+                    </pre>
+                  )
+                  : <p className="text-xs">{handshakeResult.error}</p>}
+              </div>
+              <button
+                onClick={() => setHandshakeResult(null)}
+                className="text-textSecondary hover:text-textPrimary shrink-0 ml-2"
+                type="button"
+                aria-label="Dismiss"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        )}
 
         {telemetry ? (
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
