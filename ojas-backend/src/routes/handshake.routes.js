@@ -164,7 +164,8 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
         })
 
     // ── Step 4: Return response ───────────────────────────────────────────────
-     return res.status(200).json({'voltage': dlmsDecodeResponse.data.value/1000000})
+    return res.status(200).json({'Energy': dlmsDecodeResponse.data.value/1000000.00})
+
     
 
   } catch (error) {
