@@ -6,6 +6,7 @@ const router = express.Router()
 
 const DLMS_BASE_URL = 'https://ojas-dlms-service.onrender.com'
 
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 // Wraps a one-time MQTT subscription in a promise with a timeout
 function waitForMqttMessage(topic, timeoutMs = 10000) {
   return new Promise((resolve, reject) => {
@@ -75,7 +76,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-
+      await delay(500)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/handshake`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -155,7 +156,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-
+          await delay(500)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -235,7 +236,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-
+      await delay(500)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -315,7 +316,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-
+      await delay(500)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -395,7 +396,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-
+      await delay(500)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -475,7 +476,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-
+      await delay(500)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -555,7 +556,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-
+      await delay(500)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
