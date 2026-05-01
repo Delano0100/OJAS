@@ -328,7 +328,7 @@ export default function DeviceDetailPage() {
   setHandshakeLoading(true)
   setHandshakeResult(null)
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/handshake?deviceId=${device?.deviceId || deviceId}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/handshake?sid=${device?.deviceId || deviceId}`, {
       headers: {
         'Content-Type': 'application/json',
         ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
