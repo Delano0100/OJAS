@@ -1,5 +1,5 @@
 import mqtt from 'mqtt'
-import { ArrowLeft, Download, Handshake, Zap, Loader2 } from 'lucide-react'
+import { ArrowLeft, Download, Handshake, Zap, Loader2, Activity, Gauge, Flame, Radio, SlidersHorizontal } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getDeviceById, getTelemetryHistory } from '../services/device.service'
@@ -120,6 +120,26 @@ export default function DeviceDetailPage() {
     // Readenergy state
   const [readenergyLoading, setReadenergyLoading] = useState(false)
   const [readenergyResult, setReadenergyResult] = useState(null) // { success: bool, data: any, error: string }
+
+    // Readvoltage state
+  const [readvoltageLoading, setReadvoltageLoading] = useState(false)
+  const [readvoltageResult, setReadvoltageResult] = useState(null) // { success: bool, data: any, error: string }
+
+    // Readcurrent state
+  const [readcurrentLoading, setReadcurrentLoading] = useState(false)
+  const [readcurrentResult, setReadcurrentResult] = useState(null) // { success: bool, data: any, error: string }
+
+    // Readpower state
+  const [readpowerLoading, setReadpowerLoading] = useState(false)
+  const [readpowerResult, setReadpowerResult] = useState(null) // { success: bool, data: any, error: string }
+
+    // Readfrequency state
+  const [readfrquencyLoading, setReadfrequencyLoading] = useState(false)
+  const [readfrequencyResult, setReadfrequencyResult] = useState(null) // { success: bool, data: any, error: string }
+
+    // Readpwerfactor state
+  const [readpowerfactorLoading, setReadpowerfactorLoading] = useState(false)
+  const [readpowerfactorResult, setReadpowerfactorResult] = useState(null) // { success: bool, data: any, error: string }
 
 
   // Fetch device info once on mount
@@ -379,6 +399,32 @@ export default function DeviceDetailPage() {
   }
   }
 
+   const handleReadVoltage = async () => {
+    console.log('Read Voltage button pressed')
+    setReadvoltageLoading(true)
+    setReadvoltageResult(null)
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/readvoltage?sid=${device?.deviceId || deviceId}`, {
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
+      // },
+    })
+    const data = await res.json()
+    console.log('Read voltage response:', data)
+    if (!res.ok) {
+      setReadvoltageResult({ success: false, error: data?.message || `Error ${res.status}` })
+    } else {
+      setReadvoltageResult({ success: true, data })
+    }
+  } catch (err) {
+    console.error('Read energy error:', err)
+    setReadvoltageResult({ success: false, error: err.message || 'Request failed' })
+  } finally {
+    setReadvoltageLoading(false)
+  }
+  }
+
   if (loading) return <Loader />
 
   if (error || !device) {
@@ -509,8 +555,23 @@ export default function DeviceDetailPage() {
                 : <Handshake className="h-4 w-4" />}
               Read Energy
             </button>
+
+            <button
+              onClick={handleReadvoltage}
+              disabled={handshakeLoading}
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors"
+              type="button"
+            >
+              <Zap className="h-4 w-4" />
+              {readvoltaeLoading
+                ? <Loader2 className="h-4 w-4 animate-spin" />
+                : <Handshake className="h-4 w-4" />}
+              Read voltage
+            </button>
           </div>
         </div>
+
+        
 
         {/* Handshake result banner */}
         {handshakeResult && (
@@ -570,6 +631,40 @@ export default function DeviceDetailPage() {
                 </div>
                 <button
                   onClick={() => setReadenergyResult(null)}
+                  className="text-textSecondary hover:text-textPrimary shrink-0 ml-2"
+                  type="button"
+                  aria-label="Dismiss"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
+
+        {/* Readvoltage result banner */}
+        {readvoltageResult && (
+            <div
+              className={`mb-4 rounded-md border px-4 py-3 text-sm ${
+                readvoltageResult.success
+                  ? 'border-green-500/30 bg-green-500/10 text-green-400'
+                  : 'border-red-500/30 bg-red-500/10 text-red-400'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium mb-1">
+                    {readvoltageResult.success ? 'Read Energy Successful' : 'Read Energy Failed'}
+                  </p>
+                  {readvoltageResult.success
+                    ? (
+                      <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">
+                        {JSON.stringify(readvoltageResult.data, null, 2)}
+                      </pre>
+                    )
+                    : <p className="text-xs">{readvoltageResult.error}</p>}
+                </div>
+                <button
+                  onClick={() => setReadvoltageResult(null)}
                   className="text-textSecondary hover:text-textPrimary shrink-0 ml-2"
                   type="button"
                   aria-label="Dismiss"
