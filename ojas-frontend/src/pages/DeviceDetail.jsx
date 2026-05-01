@@ -353,7 +353,7 @@ export default function DeviceDetailPage() {
   }
 }
 
-  const handleReadEnergy = () => {
+  const handleReadEnergy = async () => {
     console.log('Read Energy button pressed')
     setReadenergyLoading(true)
     setReadenergyResult(null)
@@ -499,10 +499,14 @@ export default function DeviceDetailPage() {
             </button>
             <button
               onClick={handleReadEnergy}
+              disabled={handshakeLoading}
               className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors"
               type="button"
             >
               <Zap className="h-4 w-4" />
+              {readenergyLoading
+                ? <Loader2 className="h-4 w-4 animate-spin" />
+                : <Handshake className="h-4 w-4" />}
               Read Energy
             </button>
           </div>
@@ -541,6 +545,40 @@ export default function DeviceDetailPage() {
             </div>
           </div>
         )}
+
+        {/* Readenergy result banner */}
+        {readenergyResult && (
+            <div
+              className={`mb-4 rounded-md border px-4 py-3 text-sm ${
+                readenergyResult.success
+                  ? 'border-green-500/30 bg-green-500/10 text-green-400'
+                  : 'border-red-500/30 bg-red-500/10 text-red-400'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium mb-1">
+                    {readenergyResult.success ? 'Read Energy Successful' : 'Read Energy Failed'}
+                  </p>
+                  {readenergyResult.success
+                    ? (
+                      <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">
+                        {JSON.stringify(readenergyResult.data, null, 2)}
+                      </pre>
+                    )
+                    : <p className="text-xs">{readenergyResult.error}</p>}
+                </div>
+                <button
+                  onClick={() => setReadenergyResult(null)}
+                  className="text-textSecondary hover:text-textPrimary shrink-0 ml-2"
+                  type="button"
+                  aria-label="Dismiss"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
 
         {telemetry ? (
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
