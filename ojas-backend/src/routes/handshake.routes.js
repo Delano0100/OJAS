@@ -25,7 +25,7 @@ function waitForMqttMessage(topic, timeoutMs = 10000) {
       if (receivedTopic === topic) {
         clearTimeout(timer)
         mqttClient.unsubscribe(topic)
-       resolve(message.toString('hex')) // raw binary → hex string
+        resolve(message.toString('hex')) // raw binary → hex string
       }
     })
   })
@@ -48,7 +48,7 @@ router.get('/', async (req, res) => {
 
   try {
     // ── Step 1: Call DLMS service ─────────────────────────────────────────────
-    const dlmsResponse = await axios.get(`${DLMS_BASE_URL}/encode/handshake`, {
+    const dlmsEnocodeResponse = await axios.get(`${DLMS_BASE_URL}/encode/handshake`, {
       params: { sid },
       timeout: 20000,
     })
@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
     // ── Step 3: Publish combined data ─────────────────────────────────────────
     const PUBLISH_TOPIC = `device/${sid}/command`      // 👈 customize
 
-    const rawBuffer = Buffer.from(dlmsResponse.data.raw_hex, 'hex')
+    const rawBuffer = Buffer.from(dlmsEnocodeResponse.data.raw_hex, 'hex')
 
 mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
   if (err) console.error('[MQTT] Publish error:', err.message)
@@ -69,11 +69,25 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
   
 
      const mqttData = await waitForMqttMessage(SUBSCRIBE_TOPIC, 10000)
+
+
+    //  const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/handshake`, {
+    //   params: { sid },
+    //   timeout: 20000,
+    // })
+
+      const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/handshake`,{ 
+        raw_hex: mqttData },        // 👈 body
+        {
+            params: { sid },             // 👈 query param ?sid=...
+            timeout: 20000,
+        })
+
     // ── Step 4: Return response ───────────────────────────────────────────────
     return res.status(200).json({
       success: true,
-      //dlms: dlmsResponse.data,
-      mqtt: mqttData,
+      // dlms: dlmsResponse.data,
+       handshake: dlmsDecodeResponse,
     })
 
   } catch (error) {
