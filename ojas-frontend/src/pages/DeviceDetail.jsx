@@ -117,6 +117,10 @@ export default function DeviceDetailPage() {
   // Handshake state
   const [handshakeLoading, setHandshakeLoading] = useState(false)
   const [handshakeResult, setHandshakeResult] = useState(null) // { success: bool, data: any, error: string }
+    // Readenergy state
+  const [readenergyLoading, setReadenergyLoading] = useState(false)
+  const [readenergyResult, setReadenergyResult] = useState(null) // { success: bool, data: any, error: string }
+
 
   // Fetch device info once on mount
   useEffect(() => {
@@ -329,7 +333,7 @@ export default function DeviceDetailPage() {
   setHandshakeResult(null)
   try {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/handshake?sid=${device?.deviceId || deviceId}`, {
-       // headers: {
+      // headers: {
       //   'Content-Type': 'application/json',
       //   ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
       // },
@@ -351,6 +355,28 @@ export default function DeviceDetailPage() {
 
   const handleReadEnergy = () => {
     console.log('Read Energy button pressed')
+    setReadenergyLoading(true)
+    setReadenergyResult(null)
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/readenergy?sid=${device?.deviceId || deviceId}`, {
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
+      // },
+    })
+    const data = await res.json()
+    console.log('Read Energy response:', data)
+    if (!res.ok) {
+      setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
+    } else {
+      setReadenergyResult({ success: true, data })
+    }
+  } catch (err) {
+    console.error('Read energy error:', err)
+    setReadenergyResult({ success: false, error: err.message || 'Request failed' })
+  } finally {
+    setReadenergyLoading(false)
+  }
   }
 
   if (loading) return <Loader />
