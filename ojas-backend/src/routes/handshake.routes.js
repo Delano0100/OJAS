@@ -164,7 +164,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
         })
 
     // ── Step 4: Return response ───────────────────────────────────────────────
-    return res.status(200).json({'Energy': Math.floor(dlmsDecodeResponse.data.value*100)/100})
+    return res.status(200).json({ 'Energy': parseFloat((dlmsDecodeResponse.data.value / 1000000.00).toFixed(2)) })
 
     
 
