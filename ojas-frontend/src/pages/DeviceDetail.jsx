@@ -425,6 +425,70 @@ export default function DeviceDetailPage() {
   }
   }
 
+    const handleReadCurrent = async () => {
+      console.log('Read current button pressed')
+      setReadcurrentLoading(true)
+      setReadcurrentResult(null)
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/readcurrent?sid=${device?.deviceId || deviceId}`)
+    const data = await res.json()
+    if (!res.ok) setReadcurrentResult({ success: false, error: data?.message || `Error ${res.status}` })
+    else setReadcurrentResult({ success: true, data })
+  } catch (err) {
+    setReadcurrentResult({ success: false, error: err.message || 'Request failed' })
+  } finally {
+    setReadcurrentLoading(false)
+  }
+}
+
+const handleReadPower = async () => {
+     console.log('Read power button pressed')
+     setReadpowerLoading(true)
+     setReadpowerResult(null)
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/readpower?sid=${device?.deviceId || deviceId}`)
+    const data = await res.json()
+    if (!res.ok) setReadpowerResult({ success: false, error: data?.message || `Error ${res.status}` })
+    else setReadpowerResult({ success: true, data })
+  } catch (err) {
+    setReadpowerResult({ success: false, error: err.message || 'Request failed' })
+  } finally {
+    setReadpowerLoading(false)
+  }
+}
+
+const handleReadFrequency = async () => {
+  console.log('Read frequency button pressed')
+  setReadfrequencyLoading(true)
+  setReadfrequencyResult(null)
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/readfrequency?sid=${device?.deviceId || deviceId}`)
+    const data = await res.json()
+    if (!res.ok) setReadfrequencyResult({ success: false, error: data?.message || `Error ${res.status}` })
+    else setReadfrequencyResult({ success: true, data })
+  } catch (err) {
+    setReadfrequencyResult({ success: false, error: err.message || 'Request failed' })
+  } finally {
+    setReadfrequencyLoading(false)
+  }
+}
+
+const handleReadPowerFactor = async () => {
+  console.log('Read Power Factor button pressed')
+  setReadpowerfactorLoading(true)
+  setReadpowerfactorResult(null)
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/readpowerfactor?sid=${device?.deviceId || deviceId}`)
+    const data = await res.json()
+    if (!res.ok) setReadpowerfactorResult({ success: false, error: data?.message || `Error ${res.status}` })
+    else setReadpowerfactorResult({ success: true, data })
+  } catch (err) {
+    setReadpowerfactorResult({ success: false, error: err.message || 'Request failed' })
+  } finally {
+    setReadpowerfactorLoading(false)
+  }
+}
+
   if (loading) return <Loader />
 
   if (error || !device) {
@@ -568,6 +632,46 @@ export default function DeviceDetailPage() {
                 : <Handshake className="h-4 w-4" />}
               Read voltage
             </button>
+            <button
+            onClick={handleReadCurrent}
+            disabled={readcurrentLoading}
+            className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            type="button"
+            >
+            {readcurrentLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Activity className="h-4 w-4" />}
+            Read Current
+            </button>
+
+            <button
+            onClick={handleReadPower}
+            disabled={readpowerLoading}
+            className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            type="button"
+            >
+            {readpowerLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Flame className="h-4 w-4" />}
+            Read Power
+            </button>
+
+            <button
+            onClick={handleReadFrequency}
+            disabled={readfrequencyLoading}
+            className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            type="button"
+            >
+            {readfrequencyLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Radio className="h-4 w-4" />}
+            Read Frequency
+            </button>
+
+            <button
+            onClick={handleReadPowerFactor}
+            disabled={readpowerfactorLoading}
+            className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            type="button"
+            >
+            {readpowerfactorLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <SlidersHorizontal className="h-4 w-4" />}
+            Read Power Factor
+            </button>
+            
           </div>
         </div>
 
@@ -653,7 +757,7 @@ export default function DeviceDetailPage() {
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <p className="font-medium mb-1">
-                    {readvoltageResult.success ? 'Read Voltage Successful' : 'Read Voltage Failed'}
+                    {readvoltageResult.success ? 'Read voltage Successful' : 'Read Energy Failed'}
                   </p>
                   {readvoltageResult.success
                     ? (
@@ -674,6 +778,56 @@ export default function DeviceDetailPage() {
               </div>
             </div>
           )}
+
+ 
+
+        {readcurrentResult && (
+          <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readcurrentResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <p className="font-medium mb-1">{readcurrentResult.success ? 'Read Current Successful' : 'Read Current Failed'}</p>
+                {readcurrentResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readcurrentResult.data, null, 2)}</pre> : <p className="text-xs">{readcurrentResult.error}</p>}
+              </div>
+              <button onClick={() => setReadcurrentResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
+            </div>
+          </div>
+        )}
+
+        {readpowerResult && (
+          <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readpowerResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <p className="font-medium mb-1">{readpowerResult.success ? 'Read Power Successful' : 'Read Power Failed'}</p>
+                {readpowerResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readpowerResult.data, null, 2)}</pre> : <p className="text-xs">{readpowerResult.error}</p>}
+              </div>
+              <button onClick={() => setReadpowerResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
+            </div>
+          </div>
+        )}
+
+        {readfrequencyResult && (
+          <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readfrequencyResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <p className="font-medium mb-1">{readfrequencyResult.success ? 'Read Frequency Successful' : 'Read Frequency Failed'}</p>
+                {readfrequencyResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readfrequencyResult.data, null, 2)}</pre> : <p className="text-xs">{readfrequencyResult.error}</p>}
+              </div>
+              <button onClick={() => setReadfrequencyResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
+            </div>
+          </div>
+        )}
+
+        {readpowerfactorResult && (
+          <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readpowerfactorResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <p className="font-medium mb-1">{readpowerfactorResult.success ? 'Read Power Factor Successful' : 'Read Power Factor Failed'}</p>
+                {readpowerfactorResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readpowerfactorResult.data, null, 2)}</pre> : <p className="text-xs">{readpowerfactorResult.error}</p>}
+              </div>
+              <button onClick={() => setReadpowerfactorResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
+            </div>
+          </div>
+        )}
 
         {telemetry ? (
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
