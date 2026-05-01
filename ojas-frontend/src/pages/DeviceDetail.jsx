@@ -134,7 +134,7 @@ export default function DeviceDetailPage() {
   const [readpowerResult, setReadpowerResult] = useState(null) // { success: bool, data: any, error: string }
 
     // Readfrequency state
-  const [readfrquencyLoading, setReadfrequencyLoading] = useState(false)
+  const [readfrequencyLoading, setReadfrequencyLoading] = useState(false)
   const [readfrequencyResult, setReadfrequencyResult] = useState(null) // { success: bool, data: any, error: string }
 
     // Readpwerfactor state
