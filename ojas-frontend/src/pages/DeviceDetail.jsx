@@ -1,5 +1,5 @@
 import mqtt from 'mqtt'
-import { ArrowLeft, Download, Handshake, Zap, Loader2, Activity, Gauge, Flame, Radio, SlidersHorizontal } from 'lucide-react'
+import { ArrowLeft, Download, Handshake, Zap, Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getDeviceById, getTelemetryHistory } from '../services/device.service'
