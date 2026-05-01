@@ -74,8 +74,8 @@ app.use('/auth', authRoutes)
 app.use('/api/devices', deviceRoutes)
 app.use('/api/telemetry', telemetryRoutes)
 app.use('/api/admin', adminRoutes)
-app.use('/api/handshake', handshakeRoutes)
-app.use('/api/readenergy', handshakeRoutes)
+app.use('/api', handshakeRoutes)
+
 
 
 // 404 handler
