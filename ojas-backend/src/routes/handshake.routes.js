@@ -25,11 +25,7 @@ function waitForMqttMessage(topic, timeoutMs = 10000) {
       if (receivedTopic === topic) {
         clearTimeout(timer)
         mqttClient.unsubscribe(topic)
-        try {
-          resolve(JSON.parse(message.toString()))
-        } catch {
-          resolve(message.toString()) // return raw string if not JSON
-        }
+       resolve(message.toString('hex')) // raw binary → hex string
       }
     })
   })
