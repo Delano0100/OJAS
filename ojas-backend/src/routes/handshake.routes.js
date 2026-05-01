@@ -87,7 +87,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     return res.status(200).json({
       success: true,
       // dlms: dlmsResponse.data,
-       handshake: dlmsDecodeResponse,
+       handshake: dlmsDecodeResponse.data,
     })
 
   } catch (error) {
