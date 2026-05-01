@@ -329,10 +329,10 @@ export default function DeviceDetailPage() {
   setHandshakeResult(null)
   try {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/handshake?sid=${device?.deviceId || deviceId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
-      },
+       // headers: {
+      //   'Content-Type': 'application/json',
+      //   ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
+      // },
     })
     const data = await res.json()
     console.log('Handshake response:', data)
