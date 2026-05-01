@@ -127,7 +127,7 @@ router.get('/readenergy', async (req, res) => {
     const dlmsEnocodeResponse = await axios.get(`${DLMS_BASE_URL}/encode/read`, {
       params: { 
         sid ,
-        obis: 'energy'
+        obis: 'voltage'
       },
 
       timeout: 20000,
