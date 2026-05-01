@@ -244,7 +244,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
         })
 
     // ── Step 4: Return response ───────────────────────────────────────────────
-    return res.status(200).json(dlmsDecodeResponse.data)
+    return res.status(200).json(dlmsDecodeResponse.data.value)
     
 
   } catch (error) {
