@@ -156,7 +156,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-          await delay(500)
+          await delay(100)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -236,7 +236,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-      await delay(500)
+      await delay(100)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -316,7 +316,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-      await delay(500)
+      await delay(100)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -396,7 +396,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-      await delay(500)
+      await delay(100)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -476,7 +476,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-      await delay(500)
+      await delay(100)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
@@ -556,7 +556,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
     //   params: { sid },
     //   timeout: 20000,
     // })
-      await delay(500)
+      await delay(100)
       const dlmsDecodeResponse = await axios.post(`${DLMS_BASE_URL}/decode/read`,{ 
         raw_hex: mqttData },        // 👈 body
         {
