@@ -1,5 +1,5 @@
 import mqtt from 'mqtt'
-import { ArrowLeft, Download, Handshake, Zap, Loader2 } from 'lucide-react'
+import { ArrowLeft, Download, Handshake, Zap, Loader2, Activity, Gauge, Flame, Radio, SlidersHorizontal } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getDeviceById, getTelemetryHistory } from '../services/device.service'
@@ -557,13 +557,13 @@ export default function DeviceDetailPage() {
             </button>
 
             <button
-              onClick={handleReadvoltage}
+              onClick={handleReadVoltage}
               disabled={handshakeLoading}
               className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors"
               type="button"
             >
               <Zap className="h-4 w-4" />
-              {readvoltaeLoading
+              {readvoltageLoading
                 ? <Loader2 className="h-4 w-4 animate-spin" />
                 : <Handshake className="h-4 w-4" />}
               Read voltage
