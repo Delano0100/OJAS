@@ -123,8 +123,6 @@ export default function DeviceDetailPage() {
   //Readenergy state
   const [readenergyLoading, setReadenergyLoading] = useState(false)
   const [readenergyResult, setReadenergyResult] = useState(null) // { success: bool, data: any, error: string }
-  const [readenergyError, setReadenergyError] = useState(null)
-
 
 
 
@@ -380,43 +378,31 @@ export default function DeviceDetailPage() {
   }
 }
 
-//   const handleReadEnergy = async () => {
-//     console.log('Read Energy button pressed')
-//     setReadenergyLoading(true)
-//     setReadenergyResult(null)
-//   try {
-//     const res = await fetch(`${import.meta.env.VITE_API_URL}/readenergy?sid=${device?.deviceId || deviceId}`, {
-//       // headers: {
-//       //   'Content-Type': 'application/json',
-//       //   ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
-//       // },
-//     })
-//     const data = await res.json()
-//     console.log('Read Energy response:', data)
-//     if (!res.ok) {
-//       setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
-//     } else {
-//       setReadenergyResult({ success: true, data })
-//     }
-//   } catch (err) {
-//     console.error('Read energy error:', err)
-//     setReadenergyResult({ success: false, error: err.message || 'Request failed' })
-//   } finally {
-//     setReadenergyLoading(false)
-//   }
-//   }
-
   const handleReadEnergy = async () => {
-  setReadenergyLoading(true)
+    console.log('Read Energy button pressed')
+    setReadenergyLoading(true)
+    setReadenergyResult(null)
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/readenergy?sid=${device?.deviceId || deviceId}`)
-    await res.json()
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/readenergy?sid=${device?.deviceId || deviceId}`, {
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
+      // },
+    })
+    const data = await res.json()
+    console.log('Read Energy response:', data)
+    if (!res.ok) {
+      setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
+    } else {
+      setReadenergyResult({ success: true, data })
+    }
   } catch (err) {
     console.error('Read energy error:', err)
+    setReadenergyResult({ success: false, error: err.message || 'Request failed' })
   } finally {
     setReadenergyLoading(false)
   }
-}
+  }
 
  
 
@@ -733,7 +719,7 @@ const handleReadPowerFactor = async () => {
         )}
 
         {/* Readenergy result banner */}
-        {/* {readenergyResult && (
+        {readenergyResult && (
             <div
               className={`mb-4 rounded-md border px-4 py-3 text-sm ${
                 readenergyResult.success
@@ -764,25 +750,7 @@ const handleReadPowerFactor = async () => {
                 </button>
               </div>
             </div>
-          )} */}
-
-          {/* Error only */}
-{readenergyError && (
-  <div className="mb-4 rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-    {readenergyError}
-  </div>
-)}
-
-{/* EnergyMeter always visible, fed by live telemetry */}
-<div className="section-card mb-4">
-  <h3 className="text-sm font-semibold text-textPrimary mb-3">Energy Meter Readings</h3>
-  {readenergyLoading
-    ? <p className="text-textSecondary text-sm">Fetching readings...</p>
-    : <EnergyMeter readings={telemetry} />  // 👈 pass live telemetry state
-  }
-</div>
-
-
+          )}
         {/* Readvoltage result banner */}
         {readvoltageResult && (
             <div
