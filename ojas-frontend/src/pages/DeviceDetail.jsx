@@ -443,7 +443,7 @@ export default function DeviceDetailPage() {
     const data = await res.json()
      console.log('Read current response:', data)
     if (!res.ok) setReadcurrentResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setTelemetry((prev) => ({ ...prev, PhaseCurrent:  data['Phase Current'],  timestamp: new Date().toISOString(), }))
+    else setTelemetry((prev) => ({ ...prev, current:  data["Phase Current"],  timestamp: new Date().toISOString(), }))
   } catch (err) {
     setReadcurrentResult({ success: false, error: err.message || 'Request failed' })
   } finally {
