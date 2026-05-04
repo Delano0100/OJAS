@@ -458,6 +458,7 @@ const handleReadPower = async () => {
   try {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readpower?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
+     console.log("ReadPower response is:",data)
     if (!res.ok) setReadpowerResult({ success: false, error: data?.message || `Error ${res.status}` })
     else setReadpowerResult({ success: true, data })
   } catch (err) {
@@ -490,6 +491,7 @@ const handleReadPowerFactor = async () => {
   try {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readpowerfactor?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
+    console.log("ReadPowerFactor response is:",data)
     if (!res.ok) setReadpowerfactorResult({ success: false, error: data?.message || `Error ${res.status}` })
     else setReadpowerfactorResult({ success: true, data })
   } catch (err) {
