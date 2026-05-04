@@ -6,6 +6,7 @@ import { getDeviceById, getTelemetryHistory } from '../services/device.service'
 import Loader from '../components/common/Loader'
 import HistoryChart from '../components/charts/HistoryChart'
 import { timeAgo } from '../utils/timeAgo'
+import EnergyMeter from '../components/sensors/EnergyMeter'
 
 const TELEMETRY_CACHE_KEY = 'ojas_recent_telemetry_by_device'
 const TELEMETRY_PAYLOAD_CACHE_KEY = 'ojas_recent_telemetry_payload_by_device'
@@ -118,8 +119,12 @@ export default function DeviceDetailPage() {
   const [handshakeLoading, setHandshakeLoading] = useState(false)
   const [handshakeResult, setHandshakeResult] = useState(null) // { success: bool, data: any, error: string }
     // Readenergy state
-  const [readenergyLoading, setReadenergyLoading] = useState(false)
-  const [readenergyResult, setReadenergyResult] = useState(null) // { success: bool, data: any, error: string }
+  // const [readenergyLoading, setReadenergyLoading] = useState(false)
+  // const [readenergyResult, setReadenergyResult] = useState(null) // { success: bool, data: any, error: string }
+
+  //[displayig result in component energy meter.jsx]
+  const [readenergyReadings, setReadenergyReadings] = useState(null)
+const [readenergyError, setReadenergyError] = useState(null)
 
     // Readvoltage state
   const [readvoltageLoading, setReadvoltageLoading] = useState(false)
@@ -373,31 +378,50 @@ export default function DeviceDetailPage() {
   }
 }
 
+  // const handleReadEnergy = async () => {
+  //   console.log('Read Energy button pressed')
+  //   setReadenergyLoading(true)
+  //   setReadenergyResult(null)
+  // try {
+  //   const res = await fetch(`${import.meta.env.VITE_API_URL}/readenergy?sid=${device?.deviceId || deviceId}`, {
+  //     // headers: {
+  //     //   'Content-Type': 'application/json',
+  //     //   ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
+  //     // },
+  //   })
+  //   const data = await res.json()
+  //   console.log('Read Energy response:', data)
+  //   if (!res.ok) {
+  //     setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
+  //   } else {
+  //     setReadenergyResult({ success: true, data })
+  //   }
+  // } catch (err) {
+  //   console.error('Read energy error:', err)
+  //   setReadenergyResult({ success: false, error: err.message || 'Request failed' })
+  // } finally {
+  //   setReadenergyLoading(false)
+  // }
+  // }
+
   const handleReadEnergy = async () => {
-    console.log('Read Energy button pressed')
-    setReadenergyLoading(true)
-    setReadenergyResult(null)
+  setReadenergyLoading(true)
+  setReadenergyReadings(null)
+  setReadenergyError(null)
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/readenergy?sid=${device?.deviceId || deviceId}`, {
-      // headers: {
-      //   'Content-Type': 'application/json',
-      //   ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
-      // },
-    })
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/readenergy?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
-    console.log('Read Energy response:', data)
     if (!res.ok) {
-      setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
+      setReadenergyError(data?.message || `Error ${res.status}`)
     } else {
-      setReadenergyResult({ success: true, data })
+      setReadenergyReadings(data) // 👈 pass the whole response as readings
     }
   } catch (err) {
-    console.error('Read energy error:', err)
-    setReadenergyResult({ success: false, error: err.message || 'Request failed' })
+    setReadenergyError(err.message || 'Request failed')
   } finally {
     setReadenergyLoading(false)
   }
-  }
+}
 
    const handleReadVoltage = async () => {
     console.log('Read Voltage button pressed')
@@ -712,7 +736,7 @@ const handleReadPowerFactor = async () => {
         )}
 
         {/* Readenergy result banner */}
-        {readenergyResult && (
+        {/* {readenergyResult && (
             <div
               className={`mb-4 rounded-md border px-4 py-3 text-sm ${
                 readenergyResult.success
@@ -743,7 +767,23 @@ const handleReadPowerFactor = async () => {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
+
+          {readenergyError && (
+  <div className="mb-4 rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+    {readenergyError}
+  </div>
+)}
+
+{(readenergyReadings || readenergyLoading) && (
+  <div className="section-card mb-4">
+    <h3 className="text-sm font-semibold text-textPrimary mb-3">Energy Meter Readings</h3>
+    {readenergyLoading
+      ? <p className="text-textSecondary text-sm">Fetching readings...</p>
+      : <EnergyMeter readings={readenergyReadings} />
+    }
+  </div>
+)}
 
         {/* Readvoltage result banner */}
         {readvoltageResult && (
