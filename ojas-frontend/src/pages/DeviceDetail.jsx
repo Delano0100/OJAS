@@ -415,7 +415,7 @@ const [readenergyError, setReadenergyError] = useState(null)
     if (!res.ok) {
       setReadenergyError(data?.message || `Error ${res.status}`)
     } else {
-      setReadenergyReadings(data) // 👈 pass the whole response as readings
+      setTelemetry(prev => ({ ...prev, ...data }))
     }
   } catch (err) {
     setReadenergyError(err.message || 'Request failed')
