@@ -383,33 +383,28 @@ export default function DeviceDetailPage() {
   }
 }
 
-  const handleReadEnergy = async () => {
-    console.log('Read Energy button pressed')
-    setReadenergyLoading(true)
-    setReadenergyResult(null)
+ const handleReadEnergy = async () => {
+  console.log('Read Energy button pressed')
+  setReadenergyLoading(true)
+  setReadenergyResult(null)
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/readenergy?sid=${device?.deviceId || deviceId}`, {
-      // headers: {
-      //   'Content-Type': 'application/json',
-      //   ...(localStorage.getItem('token') ? { Authorization: `Bearer ${localStorage.getItem('token')}` } : {}),
-      // },
-    })
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/readenergy?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     console.log('Read Energy response:', data)
-  
     if (!res.ok) {
-  setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
-} else {
-  // ✅ merge energy into telemetry so EnergyMeter updates
-  setTelemetry((prev) => ({ ...prev, energy: data.energy }))
-}
+      // ✅ error case
+      setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
+    } else {
+      // ✅ success case — push Energy into telemetry so EnergyMeter shows it
+      setTelemetry((prev) => ({ ...prev, energy: data.Energy }))
+    }
   } catch (err) {
     console.error('Read energy error:', err)
     setReadenergyResult({ success: false, error: err.message || 'Request failed' })
   } finally {
     setReadenergyLoading(false)
   }
-  }
+}
 
  
 
