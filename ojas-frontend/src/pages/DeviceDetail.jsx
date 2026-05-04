@@ -396,7 +396,7 @@ export default function DeviceDetailPage() {
       setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
     } else {
       // ✅ success case — push Energy into telemetry so EnergyMeter shows it
-      setTelemetry((prev) => ({ ...prev, energy: data.Energy }))
+      setTelemetry((prev) => ({ ...prev, energy: data.energy }))
     }
   } catch (err) {
     console.error('Read energy error:', err)
