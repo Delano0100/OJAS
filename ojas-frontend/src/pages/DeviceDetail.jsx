@@ -122,8 +122,8 @@ export default function DeviceDetailPage() {
   // const [readenergyLoading, setReadenergyLoading] = useState(false)
   // const [readenergyResult, setReadenergyResult] = useState(null) // { success: bool, data: any, error: string }
 
-  //[displayig result in component energy meter.jsx]
-  const [readenergyLoading, setReadenergyLoading] = useState(false)
+  //[displayig result in component energy meter.jsx//readenergy state]
+   const [readenergyLoading, setReadenergyLoading] = useState(false)
   const [readenergyReadings, setReadenergyReadings] = useState(null)
 const [readenergyError, setReadenergyError] = useState(null)
 
@@ -272,6 +272,8 @@ const [readenergyError, setReadenergyError] = useState(null)
 
     client.on('message', (topic, message) => {
       console.log('Incoming:', topic, message.toString())
+       if (!topic.endsWith('/telemetry')) return
+      //made this to return data in emergymetercomponent
       try {
         const parsed = JSON.parse(message.toString())
         const normalizedTimestamp = toIsoTimestamp(parsed.timestamp)
