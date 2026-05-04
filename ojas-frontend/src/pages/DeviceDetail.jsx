@@ -765,7 +765,7 @@ const handleReadPowerFactor = async () => {
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <p className="font-medium mb-1">
-                    {readvoltageResult.success ? 'Read voltage Successful' : 'Read Energy Failed'}
+                   
                   </p>
                   {readvoltageResult.success
                     ? (
