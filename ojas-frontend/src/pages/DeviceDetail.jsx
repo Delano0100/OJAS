@@ -396,7 +396,7 @@ export default function DeviceDetailPage() {
       setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
     } else {
       // ✅ success case — push Energy into telemetry so EnergyMeter shows it
-      setTelemetry((prev) => ({ ...prev, energy: data.Energy }))
+      setTelemetry((prev) => ({ ...prev, energy: data.energy }))
     }
   } catch (err) {
     console.error('Read energy error:', err)
@@ -442,7 +442,7 @@ export default function DeviceDetailPage() {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readcurrent?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadcurrentResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else  setTelemetry((prev) => ({ ...prev, energy: data.Energy }))
+    else  setTelemetry((prev) => ({ ...prev, energy: data.current }))
   } catch (err) {
     setReadcurrentResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -458,7 +458,7 @@ const handleReadPower = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readpower?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadpowerResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else  setTelemetry((prev) => ({ ...prev, energy: data.Energy }))
+    else  setTelemetry((prev) => ({ ...prev, energy: data.power }))
   } catch (err) {
     setReadpowerResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -474,7 +474,7 @@ const handleReadFrequency = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readfrequency?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadfrequencyResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else  setTelemetry((prev) => ({ ...prev, energy: data.Energy }))
+    else  setTelemetry((prev) => ({ ...prev, energy: data.frequency}))
   } catch (err) {
     setReadfrequencyResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -490,7 +490,7 @@ const handleReadPowerFactor = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readpowerfactor?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadpowerfactorResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setTelemetry((prev) => ({ ...prev, energy: data.Energy }))
+    else setTelemetry((prev) => ({ ...prev, energy: data.powerFactor }))
   } catch (err) {
     setReadpowerfactorResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -789,15 +789,27 @@ const handleReadPowerFactor = async () => {
  
 
         {readcurrentResult && (
-          <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readcurrentResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
+          <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${
+            readcurrentResult.success
+             ? 'border-green-500/30 bg-green-500/10 text-green-400' 
+             : 'border-red-500/30 bg-red-500/10 text-red-400'
+             }`}>
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <p className="font-medium mb-1"></p>
-                {readcurrentResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">
+                <p className="font-medium mb-1">
+
+                </p>
+                {readcurrentResult.success
+                 ? (<pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">
                     {JSON.stringify(readcurrentResult.data, null, 2)}
-                    </pre> : <p className="text-xs">{readcurrentResult.error}</p>}
+                    </pre>
+                    )
+                    : <p className="text-xs">{readcurrentResult.error}</p>}
               </div>
-              <button onClick={() => setReadcurrentResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
+              <button onClick={() => setReadcurrentResult(null)}
+               className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" 
+               type="button" 
+               aria-label="Dismiss">✕</button>
             </div>
           </div>
         )}
@@ -806,7 +818,7 @@ const handleReadPowerFactor = async () => {
           <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readpowerResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <p className="font-medium mb-1"></p>
+                <p className="font-medium mb-1">{readpowerResult.success ? 'Read Power Successful' : 'Read Power Failed'}</p>
                 {readpowerResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readpowerResult.data, null, 2)}</pre> : <p className="text-xs">{readpowerResult.error}</p>}
               </div>
               <button onClick={() => setReadpowerResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
@@ -818,7 +830,7 @@ const handleReadPowerFactor = async () => {
           <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readfrequencyResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <p className="font-medium mb-1"></p>
+                <p className="font-medium mb-1">{readfrequencyResult.success ? 'Read Frequency Successful' : 'Read Frequency Failed'}</p>
                 {readfrequencyResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readfrequencyResult.data, null, 2)}</pre> : <p className="text-xs">{readfrequencyResult.error}</p>}
               </div>
               <button onClick={() => setReadfrequencyResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
@@ -830,7 +842,7 @@ const handleReadPowerFactor = async () => {
           <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readpowerfactorResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <p className="font-medium mb-1"></p>
+                <p className="font-medium mb-1">{readpowerfactorResult.success ? 'Read Power Factor Successful' : 'Read Power Factor Failed'}</p>
                 {readpowerfactorResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readpowerfactorResult.data, null, 2)}</pre> : <p className="text-xs">{readpowerfactorResult.error}</p>}
               </div>
               <button onClick={() => setReadpowerfactorResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
