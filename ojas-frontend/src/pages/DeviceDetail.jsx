@@ -392,7 +392,11 @@ export default function DeviceDetailPage() {
     const data = await res.json()
     console.log('Read Energy response:', data)
     if (!res.ok) {
-      setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
+      setTelemetry((prev) => ({
+  ...prev,
+  energy: data.Energy,
+  timestamp: new Date().toISOString(),
+}))
     } else {
       setReadenergyResult({ success: true, data })
     }
@@ -835,7 +839,7 @@ const handleReadPowerFactor = async () => {
           </div>
         )}
 
-        {telemetry ? (
+        {/* {telemetry ? (
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             <div className="section-card">
               <p className="text-xs text-textSecondary">Voltage</p>
@@ -864,6 +868,12 @@ const handleReadPowerFactor = async () => {
           </div>
         ) : (
           <p>Waiting for MQTT data...</p>
+        )} */}
+
+       {telemetry ? (
+        <EnergyMeter readings={telemetry} />
+        ) : (
+        <p>Waiting for MQTT data...</p>
         )}
       </div>
 
