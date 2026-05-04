@@ -270,7 +270,6 @@ export default function DeviceDetailPage() {
     })
 
     client.on('message', (topic, message) => {
-        
       console.log('Incoming:', topic, message.toString())
 
     if (!raw.startsWith('{') && !raw.startsWith('[')) {
@@ -397,7 +396,7 @@ export default function DeviceDetailPage() {
       setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
     } else {
       // ✅ success case — push Energy into telemetry so EnergyMeter shows it
-      setTelemetry((prev) => ({ ...prev, energy: data.energy }))
+      setTelemetry((prev) => ({ ...prev, energy: data.Energy }))
     }
   } catch (err) {
     console.error('Read energy error:', err)
@@ -443,7 +442,7 @@ export default function DeviceDetailPage() {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readcurrent?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadcurrentResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else  setTelemetry((prev) => ({ ...prev, current: data.current }))
+    else setReadcurrentResult({ success: true, data })
   } catch (err) {
     setReadcurrentResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -459,7 +458,7 @@ const handleReadPower = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readpower?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadpowerResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else  setTelemetry((prev) => ({ ...prev, power: data.power }))
+    else setReadpowerResult({ success: true, data })
   } catch (err) {
     setReadpowerResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -475,7 +474,7 @@ const handleReadFrequency = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readfrequency?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadfrequencyResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else  setTelemetry((prev) => ({ ...prev, frequency: data.frequency}))
+    else setReadfrequencyResult({ success: true, data })
   } catch (err) {
     setReadfrequencyResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -491,7 +490,7 @@ const handleReadPowerFactor = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readpowerfactor?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadpowerfactorResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setTelemetry((prev) => ({ ...prev, powerFactor: data.powerFactor }))
+    else setReadpowerfactorResult({ success: true, data })
   } catch (err) {
     setReadpowerfactorResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -790,27 +789,13 @@ const handleReadPowerFactor = async () => {
  
 
         {readcurrentResult && (
-          <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${
-            readcurrentResult.success
-             ? 'border-green-500/30 bg-green-500/10 text-green-400' 
-             : 'border-red-500/30 bg-red-500/10 text-red-400'
-             }`}>
+          <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readcurrentResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <p className="font-medium mb-1">
-
-                </p>
-                {readcurrentResult.success
-                 ? (<pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">
-                    {JSON.stringify(readcurrentResult.data, null, 2)}
-                    </pre>
-                    )
-                    : <p className="text-xs">{readcurrentResult.error}</p>}
+                <p className="font-medium mb-1">{readcurrentResult.success ? 'Read Current Successful' : 'Read Current Failed'}</p>
+                {readcurrentResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readcurrentResult.data, null, 2)}</pre> : <p className="text-xs">{readcurrentResult.error}</p>}
               </div>
-              <button onClick={() => setReadcurrentResult(null)}
-               className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" 
-               type="button" 
-               aria-label="Dismiss">✕</button>
+              <button onClick={() => setReadcurrentResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
             </div>
           </div>
         )}
