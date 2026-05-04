@@ -277,7 +277,8 @@ export default function DeviceDetailPage() {
     return
     }
       try {
-        const parsed = JSON.parse(message.toString())
+        //const parsed = JSON.parse(message.toString())
+        const parsed = JSON.parse(raw)
         const normalizedTimestamp = toIsoTimestamp(parsed.timestamp)
         console.log('MQTT message received:', topic, parsed)
         setTelemetry((prev) => ({
