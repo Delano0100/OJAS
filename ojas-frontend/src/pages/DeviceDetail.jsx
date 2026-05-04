@@ -493,7 +493,7 @@ const handleReadPowerFactor = async () => {
     const data = await res.json()
     console.log("ReadPowerFactor response is:",data)
     if (!res.ok) setReadpowerfactorResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else etTelemetry((prev) => ({ ...prev, powerFactor: data["power factor"],  timestamp: new Date().toISOString(), }))
+    else setTelemetry((prev) => ({ ...prev, powerFactor: data["power factor"],  timestamp: new Date().toISOString(), }))
   } catch (err) {
     setReadpowerfactorResult({ success: false, error: err.message || 'Request failed' })
   } finally {
