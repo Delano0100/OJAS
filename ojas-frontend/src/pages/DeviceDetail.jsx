@@ -270,6 +270,7 @@ export default function DeviceDetailPage() {
     })
 
     client.on('message', (topic, message) => {
+        
       console.log('Incoming:', topic, message.toString())
 
     if (!raw.startsWith('{') && !raw.startsWith('[')) {
@@ -442,7 +443,7 @@ export default function DeviceDetailPage() {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readcurrent?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadcurrentResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else  setTelemetry((prev) => ({ ...prev, energy: data.current }))
+    else  setTelemetry((prev) => ({ ...prev, current: data.current }))
   } catch (err) {
     setReadcurrentResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -458,7 +459,7 @@ const handleReadPower = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readpower?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadpowerResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else  setTelemetry((prev) => ({ ...prev, energy: data.power }))
+    else  setTelemetry((prev) => ({ ...prev, power: data.power }))
   } catch (err) {
     setReadpowerResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -474,7 +475,7 @@ const handleReadFrequency = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readfrequency?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadfrequencyResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else  setTelemetry((prev) => ({ ...prev, energy: data.frequency}))
+    else  setTelemetry((prev) => ({ ...prev, frequency: data.frequency}))
   } catch (err) {
     setReadfrequencyResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -490,7 +491,7 @@ const handleReadPowerFactor = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readpowerfactor?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadpowerfactorResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setTelemetry((prev) => ({ ...prev, energy: data.powerFactor }))
+    else setTelemetry((prev) => ({ ...prev, powerFactor: data.powerFactor }))
   } catch (err) {
     setReadpowerfactorResult({ success: false, error: err.message || 'Request failed' })
   } finally {
