@@ -271,7 +271,7 @@ export default function DeviceDetailPage() {
 
     client.on('message', (topic, message) => {
       console.log('Incoming:', topic, message.toString())
-
+    const raw = message.toString() 
     if (!raw.startsWith('{') && !raw.startsWith('[')) {
     console.log('Skipping non-JSON on topic:', topic)
     return
