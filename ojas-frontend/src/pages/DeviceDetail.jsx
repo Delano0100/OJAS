@@ -271,6 +271,11 @@ export default function DeviceDetailPage() {
 
     client.on('message', (topic, message) => {
       console.log('Incoming:', topic, message.toString())
+
+    if (!raw.startsWith('{') && !raw.startsWith('[')) {
+    console.log('Skipping non-JSON on topic:', topic)
+    return
+    }
       try {
         const parsed = JSON.parse(message.toString())
         const normalizedTimestamp = toIsoTimestamp(parsed.timestamp)
@@ -391,15 +396,13 @@ export default function DeviceDetailPage() {
     })
     const data = await res.json()
     console.log('Read Energy response:', data)
+  
     if (!res.ok) {
-      setTelemetry((prev) => ({
-  ...prev,
-  energy: data.Energy,
-  timestamp: new Date().toISOString(),
-}))
-    } else {
-      setReadenergyResult({ success: true, data })
-    }
+  setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
+} else {
+  // ✅ merge energy into telemetry so EnergyMeter updates
+  setTelemetry((prev) => ({ ...prev, energy: data.energy }))
+}
   } catch (err) {
     console.error('Read energy error:', err)
     setReadenergyResult({ success: false, error: err.message || 'Request failed' })
