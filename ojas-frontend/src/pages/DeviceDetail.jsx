@@ -474,9 +474,9 @@ const handleReadFrequency = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readfrequency?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadfrequencyResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setReadfrequencyResult({ success: true, data })
+    else setTelemetry((prev) => ({ ...prev, frequency: data.Frequency,  timestamp: new Date().toISOString(), }))
   } catch (err) {
-    setTelemetry((prev) => ({ ...prev, frequency: data.Frequency,  timestamp: new Date().toISOString(), }))
+     setReadfrequencyResult({ success: false, error: err.message || 'Request failed' })
   } finally {
     setReadfrequencyLoading(false)
   }
@@ -817,7 +817,7 @@ const handleReadPowerFactor = async () => {
           <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readfrequencyResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <p className="font-medium mb-1">{readfrequencyResult.success ? 'Read Frequency Successful' : 'Read Frequency Failed'}</p>
+                <p className="font-medium mb-1"></p>
                 {readfrequencyResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readfrequencyResult.data, null, 2)}</pre> : <p className="text-xs">{readfrequencyResult.error}</p>}
               </div>
               <button onClick={() => setReadfrequencyResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
