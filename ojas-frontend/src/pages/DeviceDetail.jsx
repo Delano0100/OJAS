@@ -460,7 +460,7 @@ const handleReadPower = async () => {
     const data = await res.json()
      console.log("ReadPower response is:",data)
     if (!res.ok) setReadpowerResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setReadpowerResult({ success: true, data })
+    else setTelemetry((prev) => ({ ...prev, power: data["Active Power"],  timestamp: new Date().toISOString(), }))
   } catch (err) {
     setReadpowerResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -493,7 +493,7 @@ const handleReadPowerFactor = async () => {
     const data = await res.json()
     console.log("ReadPowerFactor response is:",data)
     if (!res.ok) setReadpowerfactorResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setReadpowerfactorResult({ success: true, data })
+    else etTelemetry((prev) => ({ ...prev, powerFactor: data["power factor"],  timestamp: new Date().toISOString(), }))
   } catch (err) {
     setReadpowerfactorResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -832,7 +832,7 @@ const handleReadPowerFactor = async () => {
           <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readpowerfactorResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <p className="font-medium mb-1">{readpowerfactorResult.success ? 'Read Power Factor Successful' : 'Read Power Factor Failed'}</p>
+                <p className="font-medium mb-1"></p>
                 {readpowerfactorResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readpowerfactorResult.data, null, 2)}</pre> : <p className="text-xs">{readpowerfactorResult.error}</p>}
               </div>
               <button onClick={() => setReadpowerfactorResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
