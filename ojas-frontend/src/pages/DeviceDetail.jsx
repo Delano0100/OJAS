@@ -396,7 +396,7 @@ export default function DeviceDetailPage() {
       setReadenergyResult({ success: false, error: data?.message || `Error ${res.status}` })
     } else {
       // ✅ success case — push Energy into telemetry so EnergyMeter shows it
-      setTelemetry((prev) => ({ ...prev, energy: data.energy }))
+      setTelemetry((prev) => ({ ...prev, energy: data.Energy }))
     }
   } catch (err) {
     console.error('Read energy error:', err)
@@ -424,7 +424,7 @@ export default function DeviceDetailPage() {
     if (!res.ok) {
       setReadvoltageResult({ success: false, error: data?.message || `Error ${res.status}` })
     } else {
-        setReadvoltageResult({ success: true, data })
+      setReadvoltageResult({ success: true, data })
     }
   } catch (err) {
     console.error('Read energy error:', err)
@@ -765,6 +765,7 @@ const handleReadPowerFactor = async () => {
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <p className="font-medium mb-1">
+                    {readvoltageResult.success ? 'Read voltage Successful' : 'Read Energy Failed'}
                   </p>
                   {readvoltageResult.success
                     ? (
