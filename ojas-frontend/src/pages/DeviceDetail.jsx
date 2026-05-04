@@ -123,6 +123,7 @@ export default function DeviceDetailPage() {
   // const [readenergyResult, setReadenergyResult] = useState(null) // { success: bool, data: any, error: string }
 
   //[displayig result in component energy meter.jsx]
+  const [readenergyLoading, setReadenergyLoading] = useState(false)
   const [readenergyReadings, setReadenergyReadings] = useState(null)
 const [readenergyError, setReadenergyError] = useState(null)
 
