@@ -476,7 +476,7 @@ const handleReadFrequency = async () => {
     if (!res.ok) setReadfrequencyResult({ success: false, error: data?.message || `Error ${res.status}` })
     else setReadfrequencyResult({ success: true, data })
   } catch (err) {
-    setReadfrequencyResult({ success: false, error: err.message || 'Request failed' })
+    setTelemetry((prev) => ({ ...prev, frequency: data.Frequency,  timestamp: new Date().toISOString(), }))
   } finally {
     setReadfrequencyLoading(false)
   }
@@ -805,7 +805,7 @@ const handleReadPowerFactor = async () => {
           <div className={`mb-4 rounded-md border px-4 py-3 text-sm ${readpowerResult.success ? 'border-green-500/30 bg-green-500/10 text-green-400' : 'border-red-500/30 bg-red-500/10 text-red-400'}`}>
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <p className="font-medium mb-1">{readpowerResult.success ? 'Read Power Successful' : 'Read Power Failed'}</p>
+                <p className="font-medium mb-1"></p>
                 {readpowerResult.success ? <pre className="text-xs whitespace-pre-wrap break-all text-textSecondary">{JSON.stringify(readpowerResult.data, null, 2)}</pre> : <p className="text-xs">{readpowerResult.error}</p>}
               </div>
               <button onClick={() => setReadpowerResult(null)} className="text-textSecondary hover:text-textPrimary shrink-0 ml-2" type="button" aria-label="Dismiss">✕</button>
