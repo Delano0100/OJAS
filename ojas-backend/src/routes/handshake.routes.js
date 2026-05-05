@@ -619,7 +619,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
       const jsonBuffer = {
             "powerfactor": null,
           }
-          jsonBuffer.powerfactor = dlmsDecodeResponse.data.value / 100
+          jsonBuffer.powerfactor = dlmsDecodeResponse.data.value / 1000
 
         mqttClient.publish(SUBSCRIBE_TOPIC, JSON.stringify(jsonBuffer), { qos: 1 }, (err) => {
   if (err) console.error('[MQTT] Publish error:', err.message)
