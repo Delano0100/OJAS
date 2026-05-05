@@ -446,7 +446,7 @@ export default function DeviceDetailPage() {
     const data = await res.json()
      console.log('Read current response:', data)
     if (!res.ok) setReadcurrentResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setTelemetry((prev) => ({ ...prev, current:  data["Phase Current"],  timestamp: new Date().toISOString(), }))
+    else //setTelemetry((prev) => ({ ...prev, current:  data["Phase Current"],  timestamp: new Date().toISOString(), }))
   } catch (err) {
     setReadcurrentResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -463,7 +463,7 @@ const handleReadPower = async () => {
     const data = await res.json()
      console.log("ReadPower response is:",data)
     if (!res.ok) setReadpowerResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setTelemetry((prev) => ({ ...prev, power: data["Active Power"],  timestamp: new Date().toISOString(), }))
+    else //setTelemetry((prev) => ({ ...prev, power: data["Active Power"],  timestamp: new Date().toISOString(), }))
   } catch (err) {
     setReadpowerResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -479,7 +479,7 @@ const handleReadFrequency = async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/readfrequency?sid=${device?.deviceId || deviceId}`)
     const data = await res.json()
     if (!res.ok) setReadfrequencyResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setTelemetry((prev) => ({ ...prev, frequency: data.Frequency,  timestamp: new Date().toISOString(), }))
+    else //setTelemetry((prev) => ({ ...prev, frequency: data.Frequency,  timestamp: new Date().toISOString(), }))
   } catch (err) {
      setReadfrequencyResult({ success: false, error: err.message || 'Request failed' })
   } finally {
@@ -496,7 +496,7 @@ const handleReadPowerFactor = async () => {
     const data = await res.json()
     console.log("ReadPowerFactor response is:",data)
     if (!res.ok) setReadpowerfactorResult({ success: false, error: data?.message || `Error ${res.status}` })
-    else setTelemetry((prev) => ({ ...prev, powerFactor: data["power factor"],  timestamp: new Date().toISOString(), }))
+    else //setTelemetry((prev) => ({ ...prev, powerFactor: data["power factor"],  timestamp: new Date().toISOString(), }))
   } catch (err) {
     setReadpowerfactorResult({ success: false, error: err.message || 'Request failed' })
   } finally {
