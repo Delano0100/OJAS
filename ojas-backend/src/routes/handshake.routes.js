@@ -167,7 +167,8 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
           const jsonBuffer = {
             "Energy": null,
           }
-          jsonBuffer.Energy =dlmsDecodeResponse.data.value / 1000000.00;
+          jsonBuffer.Energy =parseFloat((dlmsDecodeResponse.data.value / 1000000.00).toFixed(2))
+    console.log(jsonBuffer.Energy);
 
         mqttClient.publish(SUBSCRIBE_TOPIC, JSON.stringify(jsonBuffer), { qos: 1 }, (err) => {
   if (err) console.error('[MQTT] Publish error:', err.message)
