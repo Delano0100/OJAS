@@ -244,15 +244,15 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
             timeout: 20000,
         })
 
-//           const jsonBuffer = {
-//             "voltage": null,
-//           }
-//           jsonBuffer.voltage = dlmsDecodeResponse.data.value/100;
+          const jsonBuffer = {
+            "voltage": null,
+          }
+          jsonBuffer.voltage = dlmsDecodeResponse.data.value/100;
 
-//         mqttClient.publish(SUBSCRIBE_TOPIC, jsonBuffer, { qos: 1 }, (err) => {
-//   if (err) console.error('[MQTT] Publish error:', err.message)
-//   else console.log(`[MQTT] Published raw bytes to ${SUBSCRIBE_TOPIC}`)
-// })
+        mqttClient.publish(SUBSCRIBE_TOPIC, JSON.stringify(jsonBuffer), { qos: 1 }, (err) => {
+  if (err) console.error('[MQTT] Publish error:', err.message)
+  else console.log(`[MQTT] Published raw bytes to ${SUBSCRIBE_TOPIC}`)
+})
 
     // ── Step 4: Return response ───────────────────────────────────────────────
     return res.status(200).json({'voltage': dlmsDecodeResponse.data.value/100})
