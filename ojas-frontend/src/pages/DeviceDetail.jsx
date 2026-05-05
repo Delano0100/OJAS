@@ -61,7 +61,7 @@ const writeTelemetryCache = (cache) => {
   try {
     localStorage.setItem(TELEMETRY_CACHE_KEY, JSON.stringify(cache))
   } catch {
-    // ignore localStorage failures
+    // ignore localStorage failures !
   }
 }
 
