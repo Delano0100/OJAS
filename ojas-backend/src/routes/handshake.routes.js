@@ -434,9 +434,9 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
         })
 
             const jsonBuffer = {
-            "ActivePower": null,
+            "power": null,
           }
-          jsonBuffer.ActivePower = dlmsDecodeResponse.data.value / 100
+          jsonBuffer.power = dlmsDecodeResponse.data.value / 100
 
         mqttClient.publish(SUBSCRIBE_TOPIC, JSON.stringify(jsonBuffer), { qos: 1 }, (err) => {
   if (err) console.error('[MQTT] Publish error:', err.message)
@@ -526,9 +526,9 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
 
 
           const jsonBuffer = {
-            "Frequency": null,
+            "frequency": null,
           }
-          jsonBuffer.Frequency = dlmsDecodeResponse.data.value / 100
+          jsonBuffer.frequency = dlmsDecodeResponse.data.value / 100
 
         mqttClient.publish(SUBSCRIBE_TOPIC, JSON.stringify(jsonBuffer), { qos: 1 }, (err) => {
   if (err) console.error('[MQTT] Publish error:', err.message)
@@ -617,16 +617,16 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
 
           
       const jsonBuffer = {
-            "powerfactor": null,
+            "powerFactor": null,
           }
-          jsonBuffer.powerfactor = dlmsDecodeResponse.data.value / 100
+          jsonBuffer.powerFactor = dlmsDecodeResponse.data.value / 1000
 
         mqttClient.publish(SUBSCRIBE_TOPIC, JSON.stringify(jsonBuffer), { qos: 1 }, (err) => {
   if (err) console.error('[MQTT] Publish error:', err.message)
   else console.log(`[MQTT] Published raw bytes to ${SUBSCRIBE_TOPIC}`)
 })
     // ── Step 4: Return response ───────────────────────────────────────────────
-    return res.status(200).json({'power factor': dlmsDecodeResponse.data.value/100})
+    return res.status(200).json({'power factor': dlmsDecodeResponse.data.value/1000})
     
 
   } catch (error) {
