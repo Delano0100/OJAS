@@ -165,10 +165,9 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
         })
 
           const jsonBuffer = {
-            "Energy": null,
+            "energy": null,
           }
-          jsonBuffer.Energy =parseFloat((dlmsDecodeResponse.data.value / 1000000.00).toFixed(2))
-    console.log(jsonBuffer.Energy);
+          jsonBuffer.energy = parseFloat((dlmsDecodeResponse.data.value / 1000000.00).toFixed(2))
 
         mqttClient.publish(SUBSCRIBE_TOPIC, JSON.stringify(jsonBuffer), { qos: 1 }, (err) => {
   if (err) console.error('[MQTT] Publish error:', err.message)
@@ -346,9 +345,9 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
         })
 
         const jsonBuffer = {
-            "Phase Current": null,
+            "current": null,
           }
-          jsonBuffer['Phase Current'] = dlmsDecodeResponse.data.value/100;
+          jsonBuffer.current = dlmsDecodeResponse.data.value/100;
 
         mqttClient.publish(SUBSCRIBE_TOPIC, JSON.stringify(jsonBuffer), { qos: 1 }, (err) => {
   if (err) console.error('[MQTT] Publish error:', err.message)
@@ -627,7 +626,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
   else console.log(`[MQTT] Published raw bytes to ${SUBSCRIBE_TOPIC}`)
 })
     // ── Step 4: Return response ───────────────────────────────────────────────
-    return res.status(200).json({'power factor': dlmsDecodeResponse.data.value/1000})
+    return res.status(200).json({'power factor': dlmsDecodeResponse.data.value/100})
     
 
   } catch (error) {
