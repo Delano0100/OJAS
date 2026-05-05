@@ -274,6 +274,8 @@ export default function DeviceDetailPage() {
     const raw = message.toString() 
     if (!raw.startsWith('{') && !raw.startsWith('[')) {
     console.log('Skipping non-JSON on topic:', topic)
+          const raw2 = message
+    console.log(raw2)
     return
     }
       try {
