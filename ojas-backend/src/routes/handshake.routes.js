@@ -164,6 +164,16 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
             timeout: 20000,
         })
 
+          const jsonBuffer = {
+            "Energy": null,
+          }
+          jsonBuffer.Energy = parseFloat((dlmsDecodeResponse.data.value / 1000000.00).toFixed(2))
+
+        mqttClient.publish(SUBSCRIBE_TOPIC, JSON.stringify(jsonBuffer), { qos: 1 }, (err) => {
+  if (err) console.error('[MQTT] Publish error:', err.message)
+  else console.log(`[MQTT] Published raw bytes to ${SUBSCRIBE_TOPIC}`)
+})
+
     // ── Step 4: Return response ───────────────────────────────────────────────
 return res.status(200).json({ 'Energy': parseFloat((dlmsDecodeResponse.data.value / 1000000.00).toFixed(2)) })
     
