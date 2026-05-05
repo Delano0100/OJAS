@@ -688,7 +688,11 @@ const handleReadPowerFactor = async () => {
           </div>
         </div>
 
-        
+        {telemetry ? (
+        <EnergyMeter readings={telemetry} />
+        ) : (
+        <p>Waiting for MQTT data...</p>
+        )}
 
         {/* Handshake result banner */}
         {handshakeResult && (
@@ -872,11 +876,7 @@ const handleReadPowerFactor = async () => {
           <p>Waiting for MQTT data...</p>
         )} */}
 
-       {telemetry ? (
-        <EnergyMeter readings={telemetry} />
-        ) : (
-        <p>Waiting for MQTT data...</p>
-        )}
+       
       </div>
 
       <div className="section-card space-y-4">
