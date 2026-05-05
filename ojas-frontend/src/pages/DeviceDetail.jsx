@@ -427,7 +427,7 @@ export default function DeviceDetailPage() {
     if (!res.ok) {
       setReadvoltageResult({ success: false, error: data?.message || `Error ${res.status}` })
     } else {
-        setTelemetry((prev) => ({ ...prev, voltage: data.voltage,  timestamp: new Date().toISOString(), }))
+        //setTelemetry((prev) => ({ ...prev, voltage: data.voltage,  timestamp: new Date().toISOString(), }))
     }
   } catch (err) {
     console.error('Read energy error:', err)
