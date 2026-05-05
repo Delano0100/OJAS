@@ -626,7 +626,7 @@ mqttClient.publish(PUBLISH_TOPIC, rawBuffer, { qos: 1 }, (err) => {
   else console.log(`[MQTT] Published raw bytes to ${SUBSCRIBE_TOPIC}`)
 })
     // ── Step 4: Return response ───────────────────────────────────────────────
-    return res.status(200).json({'power factor': dlmsDecodeResponse.data.value/100})
+    return res.status(200).json({'power factor': dlmsDecodeResponse.data.value/1000})
     
 
   } catch (error) {
