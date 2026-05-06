@@ -23,6 +23,8 @@ export default function SelectRole() {
 
     try {
       const response = await setRoleApi(role)
+      console.log("rsponse SelectroleAPIs ")
+      console.log("role")
       // Update auth context with new token
       await loginWithToken(response.token)
       // User role is updated, redirect to dashboard
