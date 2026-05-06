@@ -95,7 +95,7 @@ function App() {
       <Route
         path="/settings"
         element={
-          <RoleGuard allowedRoles={['SUPER_ADMIN', 'SUB_ADMIN']}>
+          <RoleGuard allowedRoles={['USER,'SUPER_ADMIN', 'SUB_ADMIN']}>
             <Settings />
           </RoleGuard>
         }
