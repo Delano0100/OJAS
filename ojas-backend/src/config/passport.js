@@ -38,6 +38,18 @@ export const configurePassport = () => {
             return done(null, existingUser)
           }
 
+          // // For new users, check if they're from company domain
+          // const isCompanyEmail = email.endsWith('@omkarenergysolutions.com')
+          
+          // const user = await User.create({
+          //   name: profile.displayName || 'Google User',
+          //   email,
+          //   googleId: profile.id,
+          //   role: isCompanyEmail ? 'SUPER_ADMIN' : null,
+          //   isRoleSelected: isCompanyEmail ? true : false,
+          // })
+
+
           // For new users, check if they're from company domain
           const isCompanyEmail = email.endsWith('@omkarenergysolutions.com')
           
@@ -45,8 +57,8 @@ export const configurePassport = () => {
             name: profile.displayName || 'Google User',
             email,
             googleId: profile.id,
-            role: isCompanyEmail ? 'SUPER_ADMIN' : null,
-            isRoleSelected: isCompanyEmail ? true : false,
+            role:  null,
+            isRoleSelected:  false,
           })
 
           return done(null, user)
