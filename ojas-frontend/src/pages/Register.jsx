@@ -19,12 +19,14 @@ export default function Register() {
   }
 
   const onSubmit = async (event) => {
+    console.log("register button pressed")
     event.preventDefault()
     setSubmitting(true)
     setError(null)
 
     try {
       const response = await register(form)
+      console.log("role is selected")
        navigate('/select-role')
       // if (!response.user?.isRoleSelected) {
       //   navigate('/select-role')
@@ -32,8 +34,10 @@ export default function Register() {
       //   navigate('/dashboard')
       // }
     } catch (submitError) {
+      console.log("role is selected(caatch)")
       setError(submitError.message)
     } finally {
+      console.log("role is selected(finally)")
       setSubmitting(false)
     }
   }
